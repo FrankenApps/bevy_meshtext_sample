@@ -1,0 +1,8 @@
+[package]
+name = "meshtext_bevy_sample"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = "0.6.1"
+meshtext = "0.1.1"
