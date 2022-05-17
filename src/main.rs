@@ -12,7 +12,7 @@ fn main() {
         }))
         .add_plugins(DefaultPlugins)
         .add_startup_system(setup)
-        .add_system(rotate_system.system())
+        .add_system(rotate_system)
         .run();
 }
 
@@ -37,8 +37,8 @@ fn setup(
     let uvs = vec![[0f32, 0f32]; positions.len()];
 
     let mut mesh = Mesh::new(bevy::render::render_resource::PrimitiveTopology::TriangleList);
-    mesh.set_attribute(Mesh::ATTRIBUTE_POSITION, positions);
-    mesh.set_attribute(Mesh::ATTRIBUTE_UV_0, uvs);
+    mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, positions);
+    mesh.insert_attribute(Mesh::ATTRIBUTE_UV_0, uvs);
     mesh.compute_flat_normals();
 
     // text
