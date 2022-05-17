@@ -10,3 +10,8 @@ Demonstrates how to use [meshtext](https://github.com/FrankenApps/meshtext) with
 1. Build for wasm using cargo `cargo build --release --target wasm32-unknown-unknown`
 2. Create JS binding with wasm-bindgen `wasm-bindgen --out-dir docs --target web target/wasm32-unknown-unknown/release/meshtext_bevy_sample.wasm`
 3. Serve the root directory with a http-server. For example [`live-server`](https://www.npmjs.com/package/live-server)
+
+Additionally a prebuilt sample can be found [here](https://frankenapps.github.io/bevy_meshtext_sample/).
+
+## GIF
+![Screen capture](https://raw.githubusercontent.com/FrankenApps/bevy_meshtext_sample/master/capture.gif "MeshText in Bevy") 
