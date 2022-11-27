@@ -44,12 +44,12 @@ fn setup(
     // text
     commands
         // use this bundle to change the rotation pivot to the center
-        .spawn_bundle(PbrBundle {
+        .spawn(PbrBundle {
             ..Default::default()
         })
         .with_children(|parent| {
             // parent is a ChildBuilder, which has a similar API to Commands
-            parent.spawn_bundle(PbrBundle {
+            parent.spawn(PbrBundle {
                 mesh: meshes.add(mesh),
                 material: materials.add(Color::rgb(1f32, 0f32, 0f32).into()),
                 // transform mesh so that it is in the center
@@ -64,7 +64,7 @@ fn setup(
         .insert(RotationEntity);
 
     // light
-    commands.spawn_bundle(PointLightBundle {
+    commands.spawn(PointLightBundle {
         point_light: PointLight {
             intensity: 1500.0,
             shadows_enabled: true,
@@ -74,16 +74,14 @@ fn setup(
         ..Default::default()
     });
     // camera
-    commands.spawn_bundle(PerspectiveCameraBundle {
+    commands.spawn(Camera3dBundle {
         transform: Transform::from_xyz(0.0, 2.0, 6.0).looking_at(Vec3::ZERO, Vec3::Y),
         ..Default::default()
     });
 }
 
 fn rotate_system(time: Res<Time>, mut query: Query<(&mut Transform, With<RotationEntity>)>) {
-    for (mut transform, is_rotation_entity) in query.iter_mut() {
-        if is_rotation_entity {
-            transform.rotation = Quat::from_rotation_y(time.seconds_since_startup() as f32);
-        }
+    for (mut transform, _) in query.iter_mut() {
+        transform.rotate_y(time.delta_seconds() as f32);
     }
 }
