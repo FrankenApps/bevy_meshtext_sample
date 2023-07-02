@@ -3,7 +3,7 @@ use meshtext::{MeshGenerator, MeshText, TextSection};
 
 fn main() {
     App::new()
-        .insert_resource(Msaa { samples: 4 })
+        .insert_resource(Msaa::Sample4)
         .insert_resource(ClearColor(Color::Rgba {
             red: 1f32,
             green: 1f32,
