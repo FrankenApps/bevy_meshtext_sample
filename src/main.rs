@@ -11,8 +11,8 @@ fn main() {
             alpha: 1f32,
         }))
         .add_plugins(DefaultPlugins)
-        .add_startup_system(setup)
-        .add_system(rotate_system)
+        .add_systems(Startup, setup)
+        .add_systems(Update, rotate_system)
         .run();
 }
 
