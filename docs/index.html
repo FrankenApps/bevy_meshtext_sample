@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Bevy Meshtext</title>
     <meta charset="UTF-8" />
@@ -21,9 +22,16 @@
         }
     </style>
 </head>
-<script type="module">
-    import init from './meshtext_bevy_sample.js'
-    init()
-</script>
+
+<body>
+    <h1 id="loading-indicator" style="position: absolute; top: 2em; left: 2em;">Loading...</h1>
+
+    <script type="module">
+        import init from './meshtext_bevy_sample.js'
+        init().then(() => {
+            document.body.removeChild(document.getElementById('loading-indicator'));
+        });
+    </script>
+</body>
 
 </html>
