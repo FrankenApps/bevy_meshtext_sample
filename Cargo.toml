@@ -4,5 +4,5 @@ version = "0.1.1"
 edition = "2021"
 
 [dependencies]
-bevy = "0.14.2"
+bevy = "0.17"
 meshtext = "0.3"

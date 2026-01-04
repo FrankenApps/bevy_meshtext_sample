@@ -8,7 +8,7 @@ Demonstrates how to use [meshtext](https://github.com/FrankenApps/meshtext) with
 
 #### WASM
 1. Build for wasm using cargo `cargo build --release --target wasm32-unknown-unknown`
-2. Create JS binding with wasm-bindgen `wasm-bindgen --out-dir docs --target web target/wasm32-unknown-unknown/release/meshtext_bevy_sample.wasm`
+2. Create JS binding with wasm-bindgen `wasm-bindgen --out-dir docs --target web target/wasm32-unknown-unknown/release/meshtext_bevy_sample.wasm` (may require running `cargo install wasm-bindgen-cli` first)
 3. Serve the root directory with a http-server. For example [`live-server`](https://www.npmjs.com/package/live-server)
 
 Additionally a prebuilt sample can be found [here](https://frankenapps.github.io/bevy_meshtext_sample/).

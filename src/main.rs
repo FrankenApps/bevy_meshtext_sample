@@ -3,8 +3,7 @@ use meshtext::{MeshGenerator, MeshText, TextSection};
 
 fn main() {
     App::new()
-        .insert_resource(bevy::pbr::DirectionalLightShadowMap { size: 4 * 1024 }) // improve shadows
-        .insert_resource(Msaa::Sample4)
+        .insert_resource(bevy::light::DirectionalLightShadowMap { size: 4 * 1024 }) // improve shadows
         .insert_resource(ClearColor(Color::Srgba(Srgba {
             red: 1f32,
             green: 1f32,
@@ -37,7 +36,10 @@ fn setup(
     let positions: Vec<[f32; 3]> = vertices.chunks(3).map(|c| [c[0], c[1], c[2]]).collect();
     let uvs = vec![[0f32, 0f32]; positions.len()];
 
-    let mut mesh = Mesh::new(bevy::render::render_resource::PrimitiveTopology::TriangleList, bevy::render::render_asset::RenderAssetUsages::RENDER_WORLD);
+    let mut mesh = Mesh::new(
+        bevy::render::render_resource::PrimitiveTopology::TriangleList,
+        bevy::asset::RenderAssetUsages::RENDER_WORLD,
+    );
     mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, positions);
     mesh.insert_attribute(Mesh::ATTRIBUTE_UV_0, uvs);
     mesh.compute_flat_normals();
@@ -45,44 +47,37 @@ fn setup(
     // text
     commands
         // use this bundle to change the rotation pivot to the center
-        .spawn(PbrBundle {
-            ..Default::default()
-        })
+        .spawn((Transform::default(), Visibility::default()))
         .with_children(|parent| {
             // parent is a ChildBuilder, which has a similar API to Commands
-            parent.spawn(PbrBundle {
-                mesh: meshes.add(mesh),
-                material: materials.add(Color::srgb(1f32, 0f32, 0f32)),
+            parent.spawn((
+                Mesh3d(meshes.add(mesh)),
+                MeshMaterial3d(materials.add(Color::srgb(1f32, 0f32, 0f32))),
                 // transform mesh so that it is in the center
-                transform: Transform::from_translation(Vec3::new(
-                    text_mesh.bbox.size().x / -2f32,
-                    0f32,
-                    0f32,
-                )),
-                ..Default::default()
-            });
+                Transform::from_translation(Vec3::new(text_mesh.bbox.size().x / -2f32, 0f32, 0f32)),
+            ));
         })
         .insert(RotationEntity);
 
     // light
-    commands.spawn(DirectionalLightBundle {
-        directional_light: DirectionalLight {
+    commands.spawn((
+        DirectionalLight {
             illuminance: 1500.0,
             shadows_enabled: true,
             ..default()
         },
-        transform: Transform::from_rotation(Quat::from_rotation_x(-0.340)),
-        ..default()
-    });
+        Transform::from_rotation(Quat::from_rotation_x(-0.340)),
+    ));
     // camera
-    commands.spawn(Camera3dBundle {
-        transform: Transform::from_xyz(0.0, 2.0, 6.0).looking_at(Vec3::ZERO, Vec3::Y),
-        ..Default::default()
-    });
+    commands.spawn((
+        Camera3d::default(),
+        Transform::from_xyz(0.0, 2.0, 6.0).looking_at(Vec3::ZERO, Vec3::Y),
+        Msaa::Sample4,
+    ));
 }
 
 fn rotate_system(time: Res<Time>, mut query: Query<&mut Transform, With<RotationEntity>>) {
     for mut transform in query.iter_mut() {
-        transform.rotate_y(time.delta_seconds());
+        transform.rotate_y(time.delta_secs());
     }
 }
